@@ -48,36 +48,20 @@
    Time Complexity: O(n)  
    Space: O(n)
    
-        def copyRandomList(self, head):
-        """
-        :type head: RandomListNode
-        :rtype: RandomListNode
-        """
         if not head:
-            return
+            return 
         
-        # Copy each node once, double list
+        dic= {}
         temp = head
-        while temp:
-            next = temp.next
-            temp.next = RandomListNode(temp.label)
-            temp = temp.next
-            temp.next = next
-            temp = temp.next
+        temp1 = head
         
-        # Assign copied nodes' random pointer
-        temp = head
         while temp:
-            if temp.random:
-                temp.next.random = temp.random.next
-            temp = temp.next.next
-        
-        # Restore original list, and get copied list
-        newhead = head.next
-        while head:
-            temp = head.next
-            head.next = temp.next
-            head = head.next
-            if temp.next:
-                temp.next = temp.next.next
-        return newhead
+            dic[temp] = RandomListNode(temp.label)
+            temp = temp.next
+            
+        while temp1:
+            dic[temp1].next = dic.get(temp1.next)
+            dic[temp1].random = dic.get(temp1.random)
+            temp1 = temp1.next
+            
+        return dic[head]
